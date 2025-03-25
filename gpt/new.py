@@ -6,7 +6,7 @@ import json
 from openpyxl import load_workbook
 
 # Set your OpenAI API key
-openai.api_key = ' '
+openai.api_key = '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'
 
 # List of predefined categories
 categories = [
@@ -139,8 +139,8 @@ def process_excel(file_path):
     sheet['K1'] = 'Showcase Benefits'
 
     for row in range(2, sheet.max_row + 1):
-        title = sheet[f'B{row}'].value  
-        description = sheet[f'C{row}'].value  
+        title = sheet[f'A{row}'].value  
+        description = sheet[f'B{row}'].value  
 
         print(f"Processing row {row}: ")
 
@@ -168,4 +168,4 @@ def process_excel(file_path):
     print("All rows processed successfully and workbook saved.")
 
 # Example usage
-process_excel("/home/vedant/ScrapData/scrap/SriSriTatvaProduct.xlsx")
+process_excel("/home/vedant/DataScraper/Web_scraping/scrap/vitalCareProduct.xlsx")

@@ -6,7 +6,7 @@ import json
 from openpyxl import load_workbook
 
 # Set your OpenAI API key
-openai.api_key = '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'
+openai.api_key = ''
 
 # List of predefined categories
 categories = [

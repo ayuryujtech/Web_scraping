@@ -10,9 +10,9 @@ This README explains how to scrape product data using the provided Python script
 2. Install required libraries:
 
     
-bash
+```
     pip install requests beautifulsoup4 pandas openpyxl
-
+```
 
 ---
 
@@ -20,15 +20,16 @@ bash
 
 Run Productdatalink.py to extract product names and links from the website.
 
-bash
+```
 python Productdatalink.py
-
+```
 
 ## Step 2: Scrape Product Details
 
 Next, use the output CSV from step 1 as input to scrap1.py to scrape detailed product data.
-
-python scrap1.py
+```
+    python scrap1.py
+```
 
 What it does:
 

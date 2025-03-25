@@ -1,0 +1,22 @@
+# Byte-compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+
+# Environment variables and secrets
+.env
+*.env
+
+# Dependencies (optional, if using requirements.txt)
+*.log
+*.bak
+
+# IDE settings (optional)
+.vscode/
+.idea/
+
+#xl file
+*.xlsx

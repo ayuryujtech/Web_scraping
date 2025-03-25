@@ -3,6 +3,7 @@ import openai
 
 # Load the Excel file
 file_path = '/home/vedant/ScrapData/scrap/Data/KapivaProduct.xlsx'
+
 kapiva_data = pd.read_excel(file_path)
 
 # Set up the OpenAI API key

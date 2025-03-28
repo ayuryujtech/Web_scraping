@@ -65,12 +65,17 @@ ITs generate to unique title for each prodoct it help to diffretiatie diffrent s
 
 ## step 5: seperator empty filled package size
 ```
-    seperater_empty_filled3.py
+    python seperater_empty_filled3.py
 ```
 Its use to figure out empty package size product 
 
-## step 6: 
+## step 6: Then Format the Package size according our model 
+```
+   python Normalize&Package4.py
+```
 
+## Now our data is ready 
+here the filled data is ready but the empty data file is need to sort by us...
 
 ### Notes
 

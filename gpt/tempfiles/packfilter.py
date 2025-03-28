@@ -6,7 +6,7 @@ import time
 from openpyxl import load_workbook, Workbook
 
 # Function to set up OpenAI API key (replace with your actual key)
-openai.api_key = ' '
+openai.api_key = ''
 
 # Function to format data into the target structure with retry handling for API calls
 def normalize_pack_data(pack_data):
@@ -111,4 +111,4 @@ def process_excel(file_path):
     print(f"All rows processed successfully and new workbook saved at {new_file_path}")
 
 # Example usage (replace with actual file path)
-process_excel("/home/vedant/ScrapData/gpt/filter/Kapiva_Filled_Pack_Size_MRP.xlsx")
+process_excel("/home/vedant/DataScraper/Web_scraping/gpt/vitalcare_Filled.xlsx")

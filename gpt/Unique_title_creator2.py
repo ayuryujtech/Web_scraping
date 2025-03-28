@@ -2,11 +2,11 @@ import pandas as pd
 import openai
 
 # Load the Excel file
-file_path = '/home/vedant/ScrapData/scrap/Data/SriSriTatvaProduct.xlsx'
+file_path = '/home/vedant/DataScraper/Web_scraping/scrap/vitalCareProduct.xlsx'
 kapiva_data = pd.read_excel(file_path)
 
 # Set up the OpenAI API key
-openai.api_key = ' '
+openai.api_key = ''
 
 # Function to generate unique titles with GPT using benefits
 def generate_unique_title(product_title, benefits):
@@ -51,7 +51,7 @@ def make_titles_unique(df):
 unique_kapiva_data = make_titles_unique(kapiva_data)
 
 # Save the modified data back to a new Excel file
-output_path = 'SriSriTatvaProduct_UniqueTitles.xlsx'
+output_path = 'vitalcareProduct_UniqueTitles.xlsx'
 unique_kapiva_data.to_excel(output_path, index=False)
 
 print(f"Processed data saved to {output_path}")

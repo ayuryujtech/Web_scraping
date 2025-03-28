@@ -3,8 +3,8 @@ import json
 import re
 from openpyxl import load_workbook, Workbook
 
-# Function to normalize pack data with product-specific names
-def normalize_pack_data(pack_data, product_name):
+# Function to normalize "Pack Size MRP" data
+def normalize_pack_data(pack_data):
     normalized_data = []
     seen_variants = set()  # Track unique (size, flavor) tuples
 
@@ -16,16 +16,12 @@ def normalize_pack_data(pack_data, product_name):
             mrp = item.get('mrp', '')
             flavor = item.get('flavor', '')
 
-            # Ensure the product name corresponds to this variant
-            variant_product_name = f"{product_name} {flavor} {quantity}{unit}" if flavor else f"{product_name} {quantity}{unit}"
-
             # Unique identifier for this variant (size and flavor)
             variant_key = (quantity, unit, flavor)
             if variant_key not in seen_variants:  # Check if variant is unique
                 seen_variants.add(variant_key)  # Add to set of seen variants
                 normalized_item = {
                     'type': 'primary' if idx == 0 else 'secondary',
-                    'productName': variant_product_name,  # Use variant-specific name
                     'size': {
                         'quantity': quantity,
                         'unit': unit
@@ -37,70 +33,64 @@ def normalize_pack_data(pack_data, product_name):
                 normalized_data.append(normalized_item)
     return normalized_data
 
-# Function to process the Excel file and normalize data
+# Function to process the Excel file and include all data with the new normalized column
 def process_excel(file_path):
     wb = load_workbook(file_path)
     sheet = wb.active
-    
-    # Identify columns for "Pack Size MRP" and "Product Name"
+
+    # Identify "Pack Size MRP" column
     pack_size_mrp_col = None
-    product_name_col = None
     for col in sheet.iter_cols(1, sheet.max_column):
         header = col[0].value
         if header == "Pack Size MRP":
             pack_size_mrp_col = col[0].column
-        elif header == "Title":
-            product_name_col = col[0].column
+            break
 
-    if not pack_size_mrp_col or not product_name_col:
-        return "Error: Necessary columns not found in the sheet."
+    if not pack_size_mrp_col:
+        print("Error: Could not find 'Pack Size MRP' column in the sheet.")
+        return
 
     # Create a new workbook to save the processed data
     new_wb = Workbook()
     new_sheet = new_wb.active
-    
-    # Copy all headers from the original sheet and add the new columns
+
+    # Copy original headers and add new headers for normalized data
     headers = [cell.value for cell in sheet[1]]
-    headers.extend(["Normalized Data", "Variant Name", "Package Unique Name"])  # Add new headers
+    headers.extend(["Normalized Data", "Variant Name"])
     new_sheet.append(headers)
 
     # Process each row in the original Excel sheet
     for row in range(2, sheet.max_row + 1):
         row_data = [sheet.cell(row=row, column=col).value for col in range(1, sheet.max_column + 1)]
-        product_name = sheet.cell(row=row, column=product_name_col).value
         pack_size_mrp_raw = sheet.cell(row=row, column=pack_size_mrp_col).value
 
-        if not pack_size_mrp_raw or not product_name:
-            row_data.extend(["", "", ""])  # Add empty normalized data and variant name if no data
+        if not pack_size_mrp_raw:
+            row_data.extend(["", ""])  # Add empty normalized data and variant name if no data
         else:
             try:
                 # Parse the JSON-like string in "Pack Size MRP" column
                 pack_data = json.loads(pack_size_mrp_raw.replace("'", '"'))  # JSON parsing
-                normalized_data = normalize_pack_data(pack_data, product_name)
+                normalized_data = normalize_pack_data(pack_data)
 
                 # Extract distinct flavors for the "Variant Name" column
                 unique_flavors = {item.get('flavor', '') for item in pack_data}
                 variant_name = ', '.join(filter(None, unique_flavors))  # Join unique flavors as a single string
 
-                # Determine the "Package Unique Name" based on the primary element
-                primary_package_name = normalized_data[0]['productName'] if normalized_data else ''
-
-                # Add the normalized data, variant name, and primary package name to the row
-                row_data.extend([json.dumps(normalized_data, indent=4), variant_name, primary_package_name])
+                # Add normalized data and variant name to the row
+                row_data.extend([json.dumps(normalized_data, indent=4), variant_name])
 
             except json.JSONDecodeError as e:
-                # Handle JSON parsing errors
                 print(f"Error decoding JSON in row {row}: {e}")
-                row_data.extend(["", "", ""])  # Add empty normalized data, variant name, and package name
+                row_data.extend(["", ""])  # Add empty normalized data and variant name in case of error
 
         # Add the row to the new sheet
         new_sheet.append(row_data)
 
     # Save the new workbook
-    new_file_path = "/home/vedant/ScrapData/gpt/PatanjaliDivya_Filter_data.xlsx"
+    new_file_path = file_path.replace(".xlsx", "file.xlsx")
     new_wb.save(new_file_path)
-    return new_file_path
+    print(f"All rows processed successfully and new workbook saved at {new_file_path}")
 
-# Process the uploaded Excel file
-processed_file_path = process_excel("/home/vedant/ScrapData/gpt/filter/PatanjaliDivya_Filled_Pack_Size_MRP.xlsx")
-print(f"Processed file saved at: {processed_file_path}")
+
+# Call the function with the input file path
+process_excel("/home/vedant/DataScraper/Web_scraping/gpt/vitalcare_Filled.xlsx")

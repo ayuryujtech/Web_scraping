@@ -74,8 +74,18 @@ Its use to figure out empty package size product
    python Normalize&Package4.py
 ```
 
+## step 7 : Download the image 
+```
+python ImageMaster.py
+```
+
 ## Now our data is ready 
 here the filled data is ready but the empty data file is need to sort by us...
+
+# UPLOAD DATA IN DATABASE
+1. Run the newitemUpdater.js file in backend testing floder . change the path & brand detials acording data uploading.
+2. Then Run the newitemImageupdater.js . (ITs update the image path in data base ).
+3. Then Run the itemIdupdater.js its Update the Package size item id in data base;
 
 ### Notes
 

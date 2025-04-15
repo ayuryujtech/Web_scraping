@@ -73,6 +73,27 @@ Its use to figure out empty package size product
 ```
    python Normalize&Package4.py
 ```
+### expamle  :- Tis conver the pacakgeSize in beleow format to new format 
+```
+[{'size': 'Sugar Free', 'mrp': ''}]
+
+conver it into below format
+
+[
+    {
+        "itemId" : "",
+        "type": "primary",
+        "size": {
+            "quantity": "100",
+            "unit": "ml"
+        },
+        "mrp": "119",
+        "sellingPrice": "119",
+        "variant": ""
+    }
+]
+
+```
 
 ## step 7 : Download the image 
 ```

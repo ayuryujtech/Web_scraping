@@ -21,6 +21,7 @@ def normalize_pack_data(pack_data):
             if variant_key not in seen_variants:  # Check if variant is unique
                 seen_variants.add(variant_key)  # Add to set of seen variants
                 normalized_item = {
+                    'itemId':'',
                     'type': 'primary' if idx == 0 else 'secondary',
                     'size': {
                         'quantity': quantity,

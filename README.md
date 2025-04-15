@@ -114,4 +114,4 @@ If any script fails or website structure changes, check the User-Agent in the he
 
 For large datasets, consider adding delays between requests (time.sleep()) or handling pagination.
 
-Some Times the UI of tatamg is change there and the key will change acoding it so corectly data is not comming so you will need to modifiy the script acordingly .
+Some Times the UI of Tatamg is change  and the key will change acording it. so corectly data is not comming Then you will need to modifiy the script acordingly .

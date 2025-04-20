@@ -20,3 +20,6 @@ venv/
 
 #xl file
 *.xlsx
+
+//all excel files for uploading
+all_excelFiles/

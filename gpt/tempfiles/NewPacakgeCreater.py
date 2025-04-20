@@ -49,7 +49,7 @@ def process_excel(file_path):
         header = col[0].value
         if header == "Pack Size MRP":
             pack_size_mrp_col = col[0].column
-        elif header == "Title":
+        elif header == "Product Name":
             product_name_col = col[0].column
 
     if not pack_size_mrp_col or not product_name_col:
@@ -61,7 +61,7 @@ def process_excel(file_path):
     
     # Copy all headers from the original sheet and add the new columns
     headers = [cell.value for cell in sheet[1]]
-    headers.extend(["Normalized Data", "Variant Name", "Package Unique Name"])  # Add new headers
+    headers.extend([ "Package Unique Name"])  # Add new headers
     new_sheet.append(headers)
 
     # Process each row in the original Excel sheet
@@ -86,7 +86,8 @@ def process_excel(file_path):
                 primary_package_name = normalized_data[0]['productName'] if normalized_data else ''
 
                 # Add the normalized data, variant name, and primary package name to the row
-                row_data.extend([json.dumps(normalized_data, indent=4), variant_name, primary_package_name])
+                row_data.extend([ primary_package_name])
+                #row_data.extend([json.dumps(normalized_data, indent=4), variant_name, primary_package_name])
 
             except json.JSONDecodeError as e:
                 # Handle JSON parsing errors
@@ -97,10 +98,10 @@ def process_excel(file_path):
         new_sheet.append(row_data)
 
     # Save the new workbook
-    new_file_path = "/home/vedant/DataScraper/Web_scraping/gpt/filter/vitalcare_Filled.xlsx"
+    new_file_path = "E:\\AYURYUJ\\Web_scraping\\all_excelFiles\\output1.xlsx"
     new_wb.save(new_file_path)
     return new_file_path
 
 # Process the uploaded Excel file
-processed_file_path = process_excel("/home/vedant/DataScraper/Web_scraping/gpt/vitalcare_Filled.xlsx")
+processed_file_path = process_excel("E:\\AYURYUJ\\Web_scraping\\all_excelFiles\\test1cleaned20250420_123855.xlsx")
 print(f"Processed file saved at: {processed_file_path}")

@@ -2,7 +2,7 @@ import pandas as pd
 import openai
 
 # Load the Excel file
-file_path = '/home/vedant/DataScraper/Web_scraping/scrap/vitalCareProduct.xlsx'
+file_path = r'E:\AYURYUJ\Web_scraping\scrap\all_zandu_scrapped_categories_benefits.xlsx'
 kapiva_data = pd.read_excel(file_path)
 
 # Set up the OpenAI API key
@@ -22,7 +22,7 @@ def generate_unique_title(product_title, benefits):
                 {"role": "system", "content": "You are a helpful assistant generating distinct product titles for e-commerce."},
                 {"role": "user", "content": prompt}
             ],
-            max_tokens=50,
+        
             temperature=0.7
         )
         # Strip any leading/trailing quotation marks added by GPT
@@ -34,16 +34,19 @@ def generate_unique_title(product_title, benefits):
 
 # Function to make only duplicate titles unique
 def make_titles_unique(df):
-    # Sort data to keep the first instance of each duplicate
-    df = df.sort_values(by=['Title', 'Showcase Benefits']).reset_index(drop=True)
+    # Check column names first
+    print("Available columns:", df.columns.tolist())
+    
+    # Use the correct column name (probably 'Product Name' instead of 'Title')
+    df = df.sort_values(by=['Product Name', 'Showcase Benefits']).reset_index(drop=True)
     
     # Identify duplicate titles
-    duplicates = df.duplicated(subset='Title', keep=False)
+    duplicates = df.duplicated(subset='Product Name', keep=False)
     
     # Apply transformation to make only duplicate titles unique
     df['Unique Title'] = df.apply(
-        lambda row: generate_unique_title(row['Title'], row['Showcase Benefits']) 
-        if duplicates[row.name] else row['Title'], axis=1)
+        lambda row: generate_unique_title(row['Product Name'], row['Showcase Benefits']) 
+        if duplicates[row.name] else row['Product Name'], axis=1)
     
     return df
 
@@ -51,7 +54,7 @@ def make_titles_unique(df):
 unique_kapiva_data = make_titles_unique(kapiva_data)
 
 # Save the modified data back to a new Excel file
-output_path = 'vitalcareProduct_UniqueTitles.xlsx'
+output_path = 'all_zandu2_unique.xlsx'
 unique_kapiva_data.to_excel(output_path, index=False)
 
 print(f"Processed data saved to {output_path}")

@@ -6,7 +6,7 @@ import json
 from openpyxl import load_workbook
 
 # Set your OpenAI API key
-openai.api_key = ''
+openai.api_key = ""
 
 # List of predefined categories
 categories = [
@@ -102,7 +102,7 @@ def get_predictions(title, description):
         
         return content
     
-    except openai.error.OpenAIError as e:
+    except Exception as e:
         print(f"OpenAI API error occurred: {e}")
         time.sleep(60)  # Wait before retrying
         return get_predictions(title, description)
@@ -168,4 +168,4 @@ def process_excel(file_path):
     print("All rows processed successfully and workbook saved.")
 
 # Example usage
-process_excel("/home/vedant/DataScraper/Web_scraping/scrap/vitalCareProduct.xlsx")
+process_excel("E:\\AYURYUJ\\Web_scraping\\scrap\\all_zandu2.xlsx")

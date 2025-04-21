@@ -77,7 +77,7 @@ def process_excel(file_path):
 
     # Create a new workbook to save the processed data
     new_wb = Workbook()
-    new_sheet = new_wb.active
+    new_sheet = new_wb.active 
     new_sheet.append(["SKU", "Pack Size MRP", "Normalized Data", "Variant Name"])  # Set headers
 
     # Process each row in the original Excel sheet

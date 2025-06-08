@@ -4,9 +4,13 @@ import time
 import re
 import json
 from openpyxl import load_workbook
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 # Set your Gemini API key
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+print(f"Using API Key: {os.getenv('GEMINI_API_KEY')}")
 
 # List of predefined categories 
 categories = [
@@ -255,7 +259,7 @@ def process_excel(file_path):
 
 # Run the processor
 if __name__ == "__main__":
-    input_file = "E:\\AYURYUJ\\Web_scraping\\scrap\\vital_care_scrapped.xlsx"
-    output_path = "E:\\AYURYUJ\\Web_scraping\\output\\vital_care_categoryBenefits.xlsx"
+    input_file = "E:\\AYURYUJ\\Web_scraping\\all_excelFiles\\zandu2\\zandu_scrapped.xlsx"
+    output_path = "E:\\AYURYUJ\\Web_scraping\\all_excelFiles\\zandu2\\zandu_Category_Benefits.xlsx"
     output_file = process_excel(input_file)
     print(f"Processing complete. Output file: {output_file}")

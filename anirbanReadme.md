@@ -21,14 +21,14 @@ This README explains how to scrape product data using the provided Python script
 Run Productdatalink.py to extract product names and links from the website.
 
 ```
-python Productdatalink.py
+python temp.py
 ```
 
 ## Step 2: Scrape Product Details
 
 Next, use the output CSV from step 1 as input to scrap1.py to scrape detailed product data.
 ```
-    python scrap1.py
+    python Scrap1.py
 ```
 
 What it does:
@@ -45,7 +45,7 @@ Saves data to an Excel file (e.g., product_details.xlsx).
 
 For the final step, you can generate category-based data using category_new.py.
 ```
-python Category_Benefit_generator1.py
+python Category_Benefit_generator1_Gemini.py
 ```
 What it does:
 
@@ -57,11 +57,11 @@ Saves a new categorized output file (e.g., categorized_products.xlsx).
 
 Its Also generate the key benefits of product
 
-## step 4: generate uniquie title 
+<!-- ## step 4: generate uniquie title 
 ```
-    python Unique_title_creator.py
+    python Unique_title_creator_Gemini.py
 ```
-ITs generate to unique title for each prodoct it help to diffretiatie diffrent size of same product
+ITs generate to unique title for each prodoct it help to diffretiatie diffrent size of same product -->
 
 ## step 5: seperator empty filled package size
 ```
@@ -71,10 +71,16 @@ Its use to figure out empty package size product
 
 ## step 6: Then Format the Package size according our model 
 ```
-   python Normalize&Package4.py
+   python NormalizePackageData.py
 ```
-
+## step 7 : 
+``` 
+## Change the folder path of input output and the run the imageMaster.py in the image folder
+```
 ## Now our data is ready 
+
+
+
 here the filled data is ready but the empty data file is need to sort by us...
 
 ### Notes

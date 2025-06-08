@@ -9,7 +9,7 @@ def clean_unique_title(title):
     if pd.isna(title):
         return title
     cleaned = str(title)
-    cleaned = re.sub(r'[,:;"\'\[\]{}]', '', cleaned)  # Remove punctuation but keep ()
+    cleaned = re.sub(r'[,:;"\'\[\]{}]', '', |, cleaned)  # Remove punctuation but keep ()
     cleaned = re.sub(r'[®™©]', '', cleaned)  # Remove trademark symbols
     cleaned = re.sub(r'\s+', ' ', cleaned)  # Replace multiple spaces with single space
     cleaned = re.sub(r'-+', '-', cleaned)  # Replace multiple hyphens with single hyphen

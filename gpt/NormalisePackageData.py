@@ -1,19 +1,35 @@
 import json
 import re
 from openpyxl import load_workbook, Workbook
-
+import os 
 need_cleaning = True
-
+import pandas as pd
 # Note:
 # This File Adds the Normalized Data, Variant Name, Package Unique Name columns to the original sheet 
 # Make sure to remove the old columns before running this file
 # Use need_cleaning = False if you don't want to clean the data ( for anirban Data use True )
+#cleaning the names
+def clean_unique_title(title):
+    """Clean special characters from unique titles while preserving parentheses"""
+    if pd.isna(title):
+        return title
+    cleaned = str(title)
+    cleaned = re.sub(r'[,:;"\'\[\]{}\|]', '', cleaned)  # Remove punctuation including |
+    cleaned = re.sub(r'[®™©]', '', cleaned)  # Remove trademark symbols
+    cleaned = re.sub(r'\s+', ' ', cleaned)  # Replace multiple spaces with single space
+    cleaned = re.sub(r'-+', '-', cleaned)  # Replace multiple hyphens with single hyphen
+    cleaned = re.sub(r'\s*\(\s*', ' (', cleaned)  # Clean space before (
+    cleaned = re.sub(r'\s*\)\s*', ') ', cleaned)  # Clean space after )
+    cleaned = cleaned.strip()
+    cleaned = re.sub(r'\s*-\s*', '-', cleaned)
+    return cleaned
 
 # Function to normalize pack data with product-specific names
+
 def normalize_pack_data(pack_data, product_name, size, unit, mrp):
     normalized_data = []
     seen_variants = set()  # Track unique (size, flavor) tuples
-    
+    print("Pack Data: ", pack_data, size, unit , mrp)
     if need_cleaning:
         if len(pack_data) <= 1:
             print("No need to clean")
@@ -22,10 +38,10 @@ def normalize_pack_data(pack_data, product_name, size, unit, mrp):
         else:
             pack_data = pack_data[1:]
             print("Need to clean")
-
+            print(pack_data)
     for idx, item in enumerate(pack_data):
         # Extract quantity and unit from size field using regex
-        match = re.match(r"(\d+)\s*(\w+)", item.get('size', ''))
+        match = re.match(r"(\d+(?:\.\d+)?)\s*(\w+)", item.get('size', ''))
         if match:
             quantity, unit = match.groups()
             mrp = item.get('mrp', '')
@@ -33,9 +49,10 @@ def normalize_pack_data(pack_data, product_name, size, unit, mrp):
 
             # Ensure the product name corresponds to this variant
             variant_product_name = f"{product_name} {flavor} {quantity}{unit}" if flavor else f"{product_name} {quantity}{unit}"
-
+            variant_product_name= clean_unique_title(variant_product_name)  # Clean the product name
             # Unique identifier for this variant (size and flavor)
             variant_key = (quantity, unit, flavor)
+            print(size, unit , mrp)
             if variant_key not in seen_variants:  # Check if variant is unique
                 seen_variants.add(variant_key)  # Add to set of seen variants
                 normalized_item = {
@@ -126,10 +143,10 @@ def process_excel(file_path):
         new_sheet.append(row_data)
 
     # Save the new workbook
-    new_file_path = "/Users/arpitmehta/projects/Web_scraping/sandhu_Final.xlsx" 
+    new_file_path = "E:\\AYURYUJ\\Web_scraping\\all_excelFiles\\vitalCare\\vitalCare_Normalised.xlsx"
     new_wb.save(new_file_path)
     return new_file_path
 
 # Process the uploaded Excel file
-processed_file_path = process_excel("/Users/arpitmehta/projects/Web_scraping/sandhu_Filled_normalized.xlsx")
+processed_file_path = process_excel("E:\\AYURYUJ\\Web_scraping\\all_excelFiles\\vitalCare\\vitalCare_Filled.xlsx")
 print(f"Processed file saved at: {processed_file_path}")

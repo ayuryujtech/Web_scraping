@@ -8,7 +8,8 @@ base_url = "https://www.1mg.com/marketer/vital-care-pvt.-ltd-74847"
 # Storage for product data
 products = []
 
-# Pagination loopimport requests
+# Pagination loop
+total_products = 63
 from bs4 import BeautifulSoup
 import pandas as pd
 
@@ -23,7 +24,7 @@ headers = {
 # Storage for product data
 products = []
 unique_urls = set()
-total_products = 55
+total_products = 63
 
 
 # Pagination loop
@@ -75,7 +76,7 @@ df.to_excel("vital_care.xlsx", index=False)
 
 print("✅ Data saved to 'vital_care.xlsx'")
 
-total_products = 55
+total_products = 63
 page_number = 1
 
 while True:

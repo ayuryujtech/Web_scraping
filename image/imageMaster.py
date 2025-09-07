@@ -8,7 +8,8 @@ import time
 import random
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
-
+output_path=r"E:\\AYURYUJ\\Web_scraping\\all_excelFiles\\vitalCare\\vital_Care_Images" #folderPath for Images
+input_path=r"E:\\AYURYUJ\\Web_scraping\\all_excelFiles\\vitalCare\\vitalCare_Normalised.xlsx"#filled file path
 # Set up logging
 log_dir = "download_logs"
 if not os.path.exists(log_dir):
@@ -138,7 +139,7 @@ def process_excel(file_path):
         download_stats["total_products"] = len(df)
         
         # Update column names to use Unique Title
-        col_title = 'Unique Title'  # Changed from 'Product Name' to 'Unique Title'
+        col_title = 'Package Unique Name'  # Changed from 'Product Name' to 'Unique Title'
         col_image_src = 'Images'    # This remains the same
         
         # Check if Unique Title column exists
@@ -164,7 +165,7 @@ def process_excel(file_path):
                 # Sanitize folder name to remove invalid characters
                 safe_title = re.sub(r'[<>:"/\\|?*]', '', str(title))
                 
-                target_folder = f"downloads/all_vitalCare_unique/{safe_title}"
+                target_folder = f"{output_path}/{safe_title}"
                 ensure_directory_existence(target_folder)
                 
                 img_urls = img_srcs.split('|')
@@ -273,12 +274,12 @@ def recover_failed_images(failed_images_path):
             # Extract image number
             img_number = 1
             for i in range(1, 20):  # Attempt to find next available number
-                target_path = f"downloads/all_vitalCare_unique/{safe_title}/image_{i}.jpg"
+                target_path = f"{output_path}/{safe_title}/image_{i}.jpg"
                 if not os.path.exists(target_path):
                     img_number = i
                     break
             
-            target_filename = f"downloads/all_vitalCare_unique/{safe_title}/image_{img_number}.jpg"
+            target_filename = f"{output_path}/{safe_title}/image_{img_number}.jpg"
             
             log_message(f"Attempting to recover image for {product_name}")
             success = download_image_with_retry(url, target_filename, product_name)
@@ -354,7 +355,7 @@ def verify_product_folders(excel_file_path):
                 
             # Sanitize folder name
             safe_title = re.sub(r'[<>:"/\\|?*]', '', str(title))
-            folder_path = f"downloads/all_vitalCare_unique/{safe_title}"
+            folder_path = f"{output_path}/{safe_title}"
             
             if not os.path.exists(folder_path):
                 # Check if this product has images
@@ -378,7 +379,7 @@ def verify_product_folders(excel_file_path):
 
 if __name__ == "__main__":
     # Update this path to point to your filled file
-    excel_file_path = r"E:\AYURYUJ\Web_scraping\gpt\vitalCare_Filled_normalized.xlsx"
+    excel_file_path = input_path
     
     # Process the specified Excel file
     process_excel(excel_file_path)

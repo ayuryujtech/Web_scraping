@@ -20,6 +20,7 @@ failed_handler = logging.FileHandler('failed_urls.log')
 failed_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
 failed_logger.addHandler(failed_handler)
 failed_logger.propagate = False  # Prevent duplicate logging in main log
+print('scrpt is logged')
 
 # Define a list of proxy addresses
 proxies = [
@@ -57,7 +58,7 @@ proxies = [
 ]
 
 # Load the links from an Excel file
-kapiva_links_df = pd.read_excel('E:\\AYURYUJ\\Web_scraping\\scrap\\vital_care.xlsx')
+kapiva_links_df = pd.read_excel("E:\\AYURYUJ\\Web_scraping\\all_excelFiles\\vitalCare\\vital_care.xlsx")
 
 # Clean function to remove illegal characters from Excel output
 def clean_text(text):
@@ -138,7 +139,7 @@ def extract_pack_details(soup):
                 
                 # Extract quantity and unit using regex
                 # This pattern matches a number followed by non-numeric text
-                match = re.match(r'(\d+)\s*(.*)', content_text)
+                match = re.match(r'(\d+(?:\.\d+)?)\s*(.*)', content_text)
                 if match:
                     content_qty, content_unit = match.groups()
                     content_qty = content_qty.strip()
@@ -220,7 +221,7 @@ def scrape_product_data(link, max_retries=3):
                 price = price_match.group(1) if price_match else "Price not found"
             else:
                 # Fallback to previous method if new tag not found
-                price_span = soup.find('span', class_='DiscountDetails__discount-price___Mdcwo')
+                price_span = soup.find('span', class_='SaleDetails__discount-price___3xUk9')
                 price = ''.join(filter(str.isdigit, price_span.get_text(strip=True))) if price_span else "Price not found"
 
             # Log the extracted price for debugging
@@ -381,12 +382,12 @@ def save_failed_urls(urls, reasons):
     failed_df.to_excel(f"failed_urls_{timestamp}.xlsx", index=False)
 
 # Output file to store scraped data
-output_file = "vital_care_scrapped.xlsx"
+output_file = "VitalCare_scrapped.xlsx"
 
 # Process each link in the DataFrame
 if os.path.exists(output_file):
     existing_data = pd.read_excel(output_file)
-
+    print("This is to check")
     failed_urls = []
     failed_reasons = []
 
@@ -419,12 +420,14 @@ if os.path.exists(output_file):
         save_failed_urls(failed_urls, failed_reasons)
 
 else:
+    print("Starting fresh scraping...")
     # If starting fresh
     kapiva_links_df[['Product Description HTML', 'Product Highlights', 'Manufacturer Name', 
                     'Address', 'Price', 'Pack Size MRP', 'Images', 
                     'Pack Quantity', 'Content Quantity', 'Content Unit']] = kapiva_links_df['Link'].apply(
         lambda link: pd.Series(scrape_product_data(link)))
     existing_data = kapiva_links_df
+    print(existing_data)
 
 # Debug output to verify image URLs are being captured
 print("Checking data before saving to Excel...")

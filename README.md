@@ -71,8 +71,15 @@ Its use to figure out empty package size product
 
 ## step 6: Then Format the Package size according our model 
 ```
-   python Normalize&Package4.py
+   python NormalisePackageData.py
 ```
+
+## step 7 : Clean Title 
+```
+   python NormalisePackageData.py
+```
+
+## Step 8 : Download Images 
 
 ## Now our data is ready 
 here the filled data is ready but the empty data file is need to sort by us...
